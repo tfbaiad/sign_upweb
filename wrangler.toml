@@ -5,5 +5,5 @@ pages_build_output_dir = "./public"
 [[d1_databases]]
 binding = "LEAGUE_DB"
 database_name = "gxls-signup-db"
-database_id = "在这里替换为你的D1数据库ID"
+database_id = "f2572bc2-a36b-422d-a8b3-e96ef85facd5"
 migrations_dir = "migrations"

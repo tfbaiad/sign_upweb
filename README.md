@@ -6,8 +6,8 @@
 
 - `public/index.html`：选手报名页面（右上角新增“公平比赛承诺书提交”入口；段位选项为 D、C、C+、C++、B、B+、B++、A、A+、A++、S0-9、S10-24、S25-49、S>=50）
 - `public/commitment.html`：公平比赛承诺书阅读、信息填写与提交页面
-- `public/admin.html`：管理员登录、查看/修改报名及承诺书记录、创建其他管理员账号
-- `functions/api/admin/`：首个管理员初始化、登录/退出、会话校验、数据读取与修改、创建管理员接口
+- `public/admin.html`：管理员登录、查看/修改报名及承诺书记录、创建其他管理员账号（初始管理员由 0004_seed_admin.sql 创建）
+- `functions/api/admin/`：登录/退出、会话校验、数据读取与修改、创建管理员接口；不再提供网页初始化接口
 - `migrations/0003_admin.sql`：管理员账号与会话表
 - `functions/api/register.js`：`POST /api/register`，提交报名
 - `functions/api/commitment.js`：`POST /api/commitment`，提交承诺书信息
@@ -54,7 +54,7 @@
 ## 管理后台与段位选项
 
 - 首页右上角增加“管理员入口”，也可直接访问 `/admin.html`。
-- 首次初始化前请先执行所有 D1 migrations，并配置 `ADMIN_SETUP_KEY` Secret。此密钥只用于创建第一个管理员；请使用密码管理器保存管理员密码。
+- 初始管理员由 `0004_seed_admin.sql` 创建，不再需要初始化入口或 `ADMIN_SETUP_KEY`。
 - 后台支持查看和修改报名记录、承诺书记录，并创建额外管理员账号。密码使用 PBKDF2-SHA256 哈希保存，登录会话使用 HttpOnly/Secure/SameSite Cookie。
 - 段位选项固定为：D、C、C+、C++、B、B+、B++、A、A+、A++、S0-9、S10-24、S25-49、S>=50。
 - 管理员会话有效期 12 小时。上线前请在 Cloudflare Pages 正式域名上测试登录、修改和退出流程。

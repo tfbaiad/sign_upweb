@@ -1,0 +1,2 @@
+import {json,currentAdmin,clearCookie,digest} from '../../_lib/admin.js';
+export async function onRequestPost({request,env}) {const m=(request.headers.get('Cookie')||'').match(/(?:^|;\s*)gxls_admin=([^;]+)/);if(m){try{await env.LEAGUE_DB.prepare('DELETE FROM admin_sessions WHERE token_hash=?').bind(await digest(decodeURIComponent(m[1]))).run()}catch{}}return json({ok:true},200,{'set-cookie':clearCookie()})}

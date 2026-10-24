@@ -1,0 +1,9 @@
+name = "gxls-signup"
+compatibility_date = "2026-10-24"
+pages_build_output_dir = "./public"
+
+[[d1_databases]]
+binding = "LEAGUE_DB"
+database_name = "gxls-signup-db"
+database_id = "在这里替换为你的D1数据库ID"
+migrations_dir = "migrations"

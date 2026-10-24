@@ -5,7 +5,7 @@ export const unb64 = (s) => Uint8Array.from(atob(s), c=>c.charCodeAt(0));
 export async function digest(text) { return b64(await crypto.subtle.digest('SHA-256', enc.encode(text))); }
 export async function passwordHash(password, salt) {
   const key = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveBits']);
-  return b64(await crypto.subtle.deriveBits({name:'PBKDF2',salt:unb64(salt),iterations:210000,hash:'SHA-256'},key,256));
+  return b64(await crypto.subtle.deriveBits({name:'PBKDF2',salt:unb64(salt),iterations:100000,hash:'SHA-256'},key,256));
 }
 export async function hashNewPassword(password) {
   const salt=b64(crypto.getRandomValues(new Uint8Array(16)));

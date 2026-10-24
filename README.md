@@ -30,8 +30,8 @@
    ```
 
    如果你在 Cloudflare 创建的数据库用了别的名字，请把命令中的数据库名换成实际名称。
-6. 确认 Pages 项目 Settings → Bindings 中 D1 绑定名为 `LEAGUE_DB`。在 Settings → Variables and Secrets 中新增 Secret：`ADMIN_SETUP_KEY`，设置为一段足够长且随机的初始化密钥，然后重新部署。
-7. 部署后访问 `/admin.html`，点击“初始化首个管理员”，输入 `ADMIN_SETUP_KEY`、用户名和至少 12 位密码。初始化成功后会自动登录。之后可在后台创建其他管理员。首个管理员创建后，初始化接口会拒绝再次初始化。
+6. 确认 Pages 项目 Settings → Bindings 中 D1 绑定名为 `LEAGUE_DB`，并重新部署。
+7. 如果使用本包提供的初始管理员账号，请确保已执行 `0004_seed_admin.sql`。如果已部署过旧版本（PBKDF2 迭代次数为 210000），升级到此版本后，还需执行 `0005_fix_initial_admin_hash.sql`，使初始账号哈希与当前兼容的 100000 次迭代一致。
 8. 发布后测试报名表单、承诺书提交和后台修改。管理员接口请求示例：
 
    ```bash
@@ -55,7 +55,7 @@
 
 - 首页右上角增加“管理员入口”，也可直接访问 `/admin.html`。
 - 初始管理员由 `0004_seed_admin.sql` 创建，不再需要初始化入口或 `ADMIN_SETUP_KEY`。
-- 后台支持查看和修改报名记录、承诺书记录，并创建额外管理员账号。密码使用 PBKDF2-SHA256 哈希保存，登录会话使用 HttpOnly/Secure/SameSite Cookie。
+- 后台支持查看和修改报名记录、承诺书记录，并创建额外管理员账号。密码使用 PBKDF2-SHA256（100000 次迭代，兼容 Cloudflare Workers）哈希保存，登录会话使用 HttpOnly/Secure/SameSite Cookie。
 - 段位选项固定为：D、C、C+、C++、B、B+、B++、A、A+、A++、S0-9、S10-24、S25-49、S>=50。
 - 管理员会话有效期 12 小时。上线前请在 Cloudflare Pages 正式域名上测试登录、修改和退出流程。
 

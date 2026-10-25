@@ -9,7 +9,7 @@
 <body>
 <div class="toolbar no-print"><a href="/">← 返回选手报名</a><button type="button" onclick="window.print()">打印 / 导出 PDF</button></div>
 <main class="paper">
-<div class="doc-no">承诺书编号：ZJG-CS-2027</div>
+<div class="doc-no">承诺书编号：ZJG-CS-2027-________</div>
 <h1>张家港市高校 CS 联赛<br>公平比赛承诺书</h1><p class="subtitle">公平 · 公正 · 公开</p>
 <p class="lead">为维护张家港市高校 CS 联赛（以下简称“本次联赛”）公平、公正、公开的竞赛环境，营造风清气正的高校电竞氛围，本人作为本次联赛的参赛人员，郑重作出如下承诺：</p>
 <ol class="clauses">
@@ -28,7 +28,7 @@
 </ol>
 <section class="entry no-print"><h2>承诺书信息填写与提交</h2>
 <form id="commitmentForm"><div class="grid">
-<div class="field full"><label for="school">选手学校 *</label><select id="school" name="school" required><option value="">请选择学校</option><option>梁丰高级中学及其国际部</option><option>沙州中学本校区</option><option>沙州中学北校区</option><option>暨阳高级中学</option><option>张家港高级中学</option><option>塘桥高级中学</option><option>崇真中学</option><option>凤凰高级中学</option><option>乐余高级中学</option><option>常青藤实验学校及其国际部</option><option>外国语实验学校及其国际部</option><option>张家港第一职业学校</option><option>张家港第二职业学校</option><option>张家港第三职业学校</option><option>张家港开放大学</option><option>江苏科技大学张家港校区</option><option>沙洲工学院</option><option>张家港市艺术学校（原张家港舞蹈学校）</option><option>张家港市特殊教育学校</option></select></div>
+<div class="field full"><label for="school">选手学校 *</label><select id="school" name="school" required><option value="">请选择学校</option><option>梁丰高级中学及其国际部</option><option>沙州中学本校区</option><option>沙州中学北校区</option><option>暨阳高级中学</option><option>张家港高级中学</option><option>塘桥高级中学</option><option>崇真中学</option><option>凤凰高级中学</option><option>乐余高级中学</option><option>常青藤实验学校及其国际部</option><option>外国语实验学校及其国际部</option><option>张家港第一职业学校</option><option>张家港第二职业学校</option><option>张家港第三职业学校</option><option>张家港开放大学</option><option>江苏科技大学张家港校区</option><option>江科大苏州理工学院</option><option>沙洲工学院</option><option>张家港市艺术学校（原张家港舞蹈学校）</option><option>张家港市特殊教育学校</option></select></div>
 <div class="field"><label for="player_name">选手本人完美名称 *</label><input id="player_name" name="player_name" required maxlength="100" placeholder="游戏内名称"></div>
 <div class="field"><label for="team_name">选手参赛队伍 *</label><input id="team_name" name="team_name" required maxlength="100" placeholder="队伍名称"></div>
 <div class="field"><label for="qq">选手 QQ *</label><input id="qq" name="qq" required inputmode="numeric" maxlength="20" placeholder="QQ 号码"></div>
@@ -40,7 +40,6 @@
 </main>
 <script>
 const form=document.querySelector('#commitmentForm'),statusBox=document.querySelector('#status'),submitBtn=document.querySelector('#submitBtn');
-function beijingDate(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
-document.querySelector('#signed_date').value=beijingDate();
-form.addEventListener('submit',async e=>{e.preventDefault();statusBox.textContent='';submitBtn.disabled=true;submitBtn.textContent='正在提交…';const payload=Object.fromEntries(new FormData(form).entries());payload.agree=document.querySelector('#agree').checked;try{const r=await fetch('/api/commitment',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'提交失败，请稍后重试');statusBox.textContent='承诺书提交成功！感谢配合。';statusBox.style.color='#167344';form.reset();document.querySelector('#signed_date').value=beijingDate()}catch(err){statusBox.textContent=err.message||'网络异常，请稍后重试';statusBox.style.color='#b42318'}finally{submitBtn.disabled=false;submitBtn.textContent='确认并提交承诺书'}});
+document.querySelector('#signed_date').value=new Date().toISOString().slice(0,10);
+form.addEventListener('submit',async e=>{e.preventDefault();statusBox.textContent='';submitBtn.disabled=true;submitBtn.textContent='正在提交…';const payload=Object.fromEntries(new FormData(form).entries());payload.agree=document.querySelector('#agree').checked;try{const r=await fetch('/api/commitment',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'提交失败，请稍后重试');statusBox.textContent='承诺书提交成功！感谢配合。';statusBox.style.color='#167344';form.reset();document.querySelector('#signed_date').value=new Date().toISOString().slice(0,10)}catch(err){statusBox.textContent=err.message||'网络异常，请稍后重试';statusBox.style.color='#b42318'}finally{submitBtn.disabled=false;submitBtn.textContent='确认并提交承诺书'}});
 </script></body></html>

@@ -1,0 +1,17 @@
+部署前后检查清单
+[ ] 先备份现有 D1 数据库
+[ ] 将 migrations/0006_accounts_payments_teams_matches.sql 复制进仓库
+[ ] 在 D1 SQL Console 执行该迁移一次（若已执行，不要重复担心；IF NOT EXISTS 可重复创建表，但仍建议检查）
+[ ] 合并 functions/_lib/accounts.js
+[ ] 合并 functions/api/auth/*.js
+[ ] 合并 functions/api/payment/index.js
+[ ] 合并 functions/api/teams/*.js
+[ ] 合并 functions/api/matches/my.js
+[ ] 合并 functions/api/admin/payments.js 和 matches.js
+[ ] 用本包的 functions/api/register.js 替换现有同路径文件（它保留原报名字段并自动关联已注册账号）
+[ ] 合并 public/account.html、teams.html、matches.html、admin-operations.html
+[ ] 在 public 放入自己的 wechat-pay-qr.png
+[ ] 检查 Pages D1 绑定名仍为 LEAGUE_DB，部署后再测试
+[ ] 注册账号、报名、提交10元订单、后台确认、队长建队、加入5名正式队员和至少1名替补、发布比赛、确认只有相关队伍成员能看到房间号
+
+目前账号注册/登录与身份选择已独立可用，但承诺书页面尚未自动要求登录并把身份写回账号。部署后先测试账户与缴费流程；再将承诺书页面改成登录态提交，避免用户绕过承诺书身份选择。

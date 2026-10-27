@@ -1,0 +1,2 @@
+import {json,digest,clearPlayerCookie} from '../../_lib/accounts.js';
+export async function onRequestPost({request,env}){const m=(request.headers.get('Cookie')||'').match(/(?:^|;\s*)gxls_player=([^;]+)/);if(m){try{await env.LEAGUE_DB.prepare('DELETE FROM player_sessions WHERE token_hash=?').bind(await digest(decodeURIComponent(m[1]))).run()}catch{}}return json({ok:true},200,{'set-cookie':clearPlayerCookie()})}

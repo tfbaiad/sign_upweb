@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>选手信息提交</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1018;--panel:#151e2b;--line:#2a3748;--gold:#d7b46a;--muted:#9aa8ba;--text:#edf2f8}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#1b2a3d 0,#0b1018 58%);font-family:Arial,"Microsoft YaHei",sans-serif;color:var(--text);display:grid;place-items:center;padding:24px}
+    .card{width:min(100%,520px);background:rgba(21,30,43,.96);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:0 24px 80px #0008}
+    .eyebrow{color:var(--gold);font-size:12px;letter-spacing:2px;font-weight:700}.title{font-size:27px;margin:10px 0}.desc{color:var(--muted);line-height:1.7;font-size:14px}
+    label{display:block;font-size:14px;margin:22px 0 8px}input[type=text]{width:100%;padding:14px 15px;border-radius:10px;border:1px solid var(--line);background:#0d1520;color:var(--text);font-size:16px;outline:none}input:focus{border-color:var(--gold)}
+    .notice{margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:10px;background:#0e1722;color:#bac6d5;font-size:12px;line-height:1.7}.consent{display:flex;gap:10px;align-items:flex-start;margin:18px 0;color:#c7d1de;font-size:13px;line-height:1.6}.consent input{margin-top:3px;accent-color:var(--gold)}
+    button{width:100%;padding:14px;border:0;border-radius:10px;background:var(--gold);color:#17130b;font-weight:800;font-size:15px;cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}#status{min-height:24px;margin-top:14px;font-size:13px;color:var(--muted)}.foot{font-size:11px;color:#77879b;margin-top:18px;line-height:1.6}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="eyebrow">CS2 · PLAYER INFORMATION</div>
+    <h1 class="title">选手信息提交</h1>
+    <p class="desc">请填写你在完美世界竞技平台使用的游戏名称。提交后，系统会记录本次提交的网络及浏览器环境信息，用于赛事报名核验与争议处理。</p>
+    <form id="form">
+      <label for="playerName">完美平台名称</label>
+      <input id="playerName" name="playerName" type="text" maxlength="40" autocomplete="off" placeholder="请输入你的完美名称" required>
+      <div class="notice"><strong>提交时将记录：</strong><br>• 网络 IP 地址（由服务器读取）<br>• 浏览器 User-Agent、语言及操作系统信息<br>• 浏览器时区与本地时间<br>• 网络 IP 推断的国家/地区、城市或区域（若服务提供商返回）<br><br>地理位置为 IP 粗略推断，可能不准确；本页面不会请求 GPS，也不会获取精确定位。</div>
+      <label class="consent"><input id="consent" type="checkbox" required><span>我已阅读上述说明，并同意为赛事核验目的收集本次提交所列信息。</span></label>
+      <button id="submit" type="submit">确认并上传</button>
+      <div id="status" role="status" aria-live="polite"></div>
+    </form>
+    <div class="foot">请勿提交他人的游戏名称。提交信息仅用于赛事管理；建议管理员设置访问权限和明确的数据保留期限。</div>
+  </main>
+<script>
+const form=document.getElementById('form'),button=document.getElementById('submit'),statusBox=document.getElementById('status');
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!document.getElementById('consent').checked)return;
+  const playerName=document.getElementById('playerName').value.trim();
+  if(!playerName){statusBox.textContent='请填写完美平台名称。';return;}
+  button.disabled=true;statusBox.textContent='正在安全提交…';
+  const payload={playerName,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'unknown',locale:navigator.language||'unknown',localTime:new Date().toISOString()};
+  try{
+    const res=await fetch('/api/player-location',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data.error||'提交失败，请稍后重试。');
+    statusBox.textContent='提交成功，记录编号：'+data.id+'。感谢配合！';form.reset();
+  }catch(err){statusBox.textContent=err.message||'网络错误，请稍后重试。';}
+  finally{button.disabled=false;}
+});
+</script>
+</body>
+</html>

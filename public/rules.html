@@ -1,1 +1,32 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>赛事规则</title><link rel="stylesheet" href="/portal.css"></head><body><section class="portal-box"><h2>赛事规则</h2><p>比赛采用赛事组委会公布的竞赛规程。请参赛选手及时查看赛制、比赛纪律、判罚与申诉规则。</p></section><script src="/portal.js"></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>赛事规则</title>
+  <link rel="stylesheet" href="/portal.css">
+  <style>
+    .rules-wrap{padding:20px;background:#fff;border:1px solid #dce5e5;min-height:520px}
+    .rules-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+    .rules-head h2{margin:0;color:#066c75}
+    .rules-actions a{display:inline-block;padding:9px 14px;border-radius:6px;background:#087f89;color:#fff;text-decoration:none;font-size:14px}
+    .rules-viewer{width:100%;height:min(78vh,1000px);min-height:560px;border:1px solid #dce5e5;border-radius:6px;background:#f4f6f6}
+    .rules-fallback{padding:16px;color:#52656a;background:#f5f8fa;border-radius:6px;line-height:1.8}
+    @media(max-width:600px){.rules-wrap{padding:12px}.rules-viewer{height:72vh;min-height:440px}}
+  </style>
+</head>
+<body>
+  <section class="rules-wrap">
+    <div class="rules-head">
+      <h2>赛事规则</h2>
+      <div class="rules-actions"><a href="/张家港高校CS联赛规则书.pdf" target="_blank" rel="noopener">新窗口打开 / 下载规则书</a></div>
+    </div>
+    <iframe class="rules-viewer" src="/张家港高校CS联赛规则书.pdf#view=FitH" title="张家港高校CS联赛规则书 PDF"></iframe>
+    <div class="rules-fallback">
+      如果上方无法显示 PDF，请点击页面顶部的“新窗口打开 / 下载规则书”。<br>
+      网站文件目录中需要放入正式文件：<strong>public/张家港高校CS联赛规则书.pdf</strong>。
+    </div>
+  </section>
+  <script src="/portal.js"></script>
+</body>
+</html>

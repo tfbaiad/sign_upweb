@@ -14,7 +14,7 @@ export async function onRequestGet({request,env}) {
       return json({error:'公告表字段不完整，请检查 announcements 表'},500);
     const textColumn=columns.has('body')?'body':'content';
     const updated=columns.has('updated_at')?',updated_at':'';
-    const r=await env.LEAGUE_DB.prepare(`SELECT id,title,${textColumn} AS body,is_pinned,created_at${updated} FROM announcements ORDER BY is_pinned DESC,id DESC`).all();
+    const r=await env.LEAGUE_DB.prepare(`SELECT id,title,${textColumn} AS body,is_pinned,datetime(created_at,'+8 hours') AS created_at${updated} FROM announcements ORDER BY is_pinned DESC,id DESC`).all();
     return json({announcements:r.results||[]});
   } catch(error) {
     return json({error:`读取公告失败：${error.message||'数据库错误'}`},500);

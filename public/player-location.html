@@ -37,7 +37,7 @@ form.addEventListener('submit',async e=>{
   const playerName=document.getElementById('playerName').value.trim();
   if(!playerName){statusBox.textContent='请填写完美平台名称。';return;}
   button.disabled=true;statusBox.textContent='正在安全提交…';
-  const payload={playerName,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'unknown',locale:navigator.language||'unknown',localTime:new Date().toISOString()};
+  const payload={playerName,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'unknown',locale:navigator.language||'unknown',localTime:new Date(Date.now()+8*60*60*1000).toISOString().replace('Z','+08:00')};
   try{
     const res=await fetch('/api/player-location',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const data=await res.json().catch(()=>({}));
